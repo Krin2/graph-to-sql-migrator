@@ -28,6 +28,14 @@ function seededRandom(seed = 42) {
   }
 }
 
+/** Keeps a point inside the canvas, `margin` away from every edge. */
+export function clampPoint(point: Point, width: number, height: number, margin = 14): Point {
+  return {
+    x: Math.min(width - margin, Math.max(margin, point.x)),
+    y: Math.min(height - margin, Math.max(margin, point.y)),
+  }
+}
+
 /** Static force-directed layout: runs the simulation to rest and returns node positions. */
 export function computeLayout(graph: Graph, width: number, height: number): Map<number, Point> {
   const nodes: LayoutNode[] = graph.nodes.map((node) => ({ id: node.id }))

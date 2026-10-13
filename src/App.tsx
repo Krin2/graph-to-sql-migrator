@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import GraphEditor from './components/GraphEditor'
 import GraphView from './components/GraphView'
 import QueryRunner from './components/QueryRunner'
@@ -12,6 +13,8 @@ import { useMigrationDemo } from './hooks/useMigrationDemo'
 export default function App() {
   const { text, edit, reset, parsed, preview, sqlJs, loadError, migration, migrationError, run } =
     useMigrationDemo()
+  // The graph takes the full width when enlarged; clicking it again restores the two-column layout
+  const [graphExpanded, setGraphExpanded] = useState(false)
 
   return (
     <div className="mx-auto max-w-6xl px-[clamp(1rem,4vw,2rem)] py-10">
@@ -30,9 +33,14 @@ export default function App() {
         title="Source graph"
         description="Nodes become rows and relationships become rows in their own tables."
       >
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className={`grid gap-6 ${graphExpanded ? '' : 'lg:grid-cols-2'}`}>
           {parsed.ok ? (
-            <GraphView graph={parsed.graph} />
+            <GraphView
+              key={text}
+              graph={parsed.graph}
+              expanded={graphExpanded}
+              onToggle={() => setGraphExpanded((value) => !value)}
+            />
           ) : (
             <p className="bg-surface border-border text-muted grid place-items-center rounded-xl border p-6 text-center">
               Fix the JSON to see the graph.

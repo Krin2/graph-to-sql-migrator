@@ -1,3 +1,9 @@
+# Secrets: environment variables, keys and certificates
+.env
+.env.*
+!.env.example
+*.pem
+
 node_modules
 dist
 *.local
